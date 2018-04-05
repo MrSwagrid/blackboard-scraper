@@ -1,17 +1,47 @@
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Webpage {
+public class HTTP {
 	
-	public Webpage(String webpage) {
-		loadPage(webpage);
-	}
-	
-	private void loadPage(String webpage) {
+	public static String loadPage(String webpage) {
+		
 		try {
+			
+			//Send request.
+			
 			URL url = new URL(webpage);
-		} catch (MalformedURLException e) {
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			connection.setUseCaches(false);
+			connection.setDoOutput(true);
+			
+			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+			out.close();
+			
+			//Get response.
+			
+			InputStream in = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			
+			String response = "", line;
+			
+			while((line = reader.readLine()) != null) {
+				response += line + '\n';
+			}
+			
+			reader.close();
+			return response.toString();
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }
