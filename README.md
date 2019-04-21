@@ -1,2 +1,2 @@
 # blackboard-scraper
-For grabbing units from Curtin Blackboard.
+Tool for scraping unit materials from Blackboard. 
